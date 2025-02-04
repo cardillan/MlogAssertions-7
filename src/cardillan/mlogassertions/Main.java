@@ -10,5 +10,6 @@ public class Main extends Mod {
         super.init();
 
         AssertLogic.init();
+        Assertions.init();
     }
 }

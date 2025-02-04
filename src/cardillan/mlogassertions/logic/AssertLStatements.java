@@ -67,7 +67,7 @@ public class AssertLStatements {
                 table.add("").growX();
             });
             t.row();
-            t.add("message: ").padLeft(6);
+            t.add("message: ").maxTextLength(0).padLeft(6);
             field(t, message, str -> message = str).width(0f).growX().padRight(3);
         }
 

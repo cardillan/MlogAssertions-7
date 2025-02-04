@@ -1,7 +1,10 @@
 package cardillan.mlogassertions.logic;
 
+import cardillan.mlogassertions.Assertions;
+import mindustry.gen.Building;
 import mindustry.logic.LExecutor;
 import mindustry.logic.LExecutor.Var;
+import mindustry.world.blocks.logic.LogicBlock;
 
 public class AssertsLInstructions {
 
@@ -35,8 +38,11 @@ public class AssertsLInstructions {
             boolean maxAssert = opMax.function.get(num(exec,value), num(exec,max));
 
             if (!typeAssert || !minAssert || !maxAssert) {
+                Building building = exec.building( LExecutor.varThis);
+                Var message = var(exec, this.message);
+                Assertions.add((LogicBlock.LogicBuild) building, LExecutor.PrintI.toString(message.objval));
+
                 //skip back to self.
-                // TODO enter broken assertion state
                 exec.counter.numval--;
                 //exec.yield = true;
             }
@@ -45,7 +51,7 @@ public class AssertsLInstructions {
         // For easier switching between v7 and v8 logic
 
         private Var var(LExecutor exec, int var) {
-            return exec.var(value);
+            return exec.var(var);
         }
 
         private double num(LExecutor exec, int var) {
