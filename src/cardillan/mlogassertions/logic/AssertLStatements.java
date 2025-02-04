@@ -22,7 +22,6 @@ public class AssertLStatements {
         Seq<Prov<LStatement>> seq = statements.map(prov -> prov::get);
         LogicIO.allStatements.addAll(seq);
 
-        // Customized LStatements will register customized reader automatically.
         for (Prov<AssertStatement> prov : statements) {
             AssertStatement statement = prov.get();
             LAssembler.customParsers.put(opcode, statement::read);
@@ -36,7 +35,7 @@ public class AssertLStatements {
         public String value = "index";
         public AssertOp opMax = AssertOp.lessThanEq;
         public String max = "10";
-        public String message = "\"Array index out of bounds (0 to 10).\"";
+        public String message = "\"Index out of bounds (0 to 10).\"";
 
         @Override
         public LCategory category() {

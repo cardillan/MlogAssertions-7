@@ -4,6 +4,8 @@ displayName: "Mlog Assertions"
 #the internal name of your mod
 name: "mlog-assertions"
 
+subtitle: "Easier debugging for mlog",
+
 #your name
 author: "cardillan"
 

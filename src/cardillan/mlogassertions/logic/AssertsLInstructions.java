@@ -32,19 +32,22 @@ public class AssertsLInstructions {
 
         @Override
         public final void run(LExecutor exec) {
+            Building building = exec.building( LExecutor.varThis);
+
             Var vaVal = var(exec, value);
             boolean typeAssert = vaVal.isobj ? type.objFunction.get(vaVal.objval) : type.function.get(vaVal.numval);
             boolean minAssert = opMin.function.get(num(exec,min), num(exec,value));
             boolean maxAssert = opMax.function.get(num(exec,value), num(exec,max));
 
             if (!typeAssert || !minAssert || !maxAssert) {
-                Building building = exec.building( LExecutor.varThis);
                 Var message = var(exec, this.message);
                 Assertions.add((LogicBlock.LogicBuild) building, LExecutor.PrintI.toString(message.objval));
 
                 //skip back to self.
                 exec.counter.numval--;
                 //exec.yield = true;
+            } else {
+                Assertions.remove((LogicBlock.LogicBuild) building);
             }
         }
 

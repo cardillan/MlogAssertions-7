@@ -32,6 +32,10 @@ public class Assertions {
         }
     }
 
+    public static void remove(LogicBuild block) {
+        remove((int) block.getX(), (int) block.getY());
+    }
+
     public static void remove(int x, int y) {
         blocks.remove(x, y);
         messages.remove(x, y);
