@@ -1,25 +1,21 @@
 package cardillan.mlogassertions.logic;
 
-import mindustry.ctype.Content;
-import mindustry.ctype.MappableContent;
-import mindustry.game.Team;
-import mindustry.gen.Building;
-import mindustry.gen.Unit;
-import mindustry.logic.ConditionOp;
 import mindustry.logic.LExecutor;
 import mindustry.logic.LVar;
 
 public class AssertsLInstructions {
 
     public static class AssertI implements LExecutor.LInstruction {
+        public TypeAssertion type;
         public LVar min;
-        public ConditionOp opMin = ConditionOp.lessThanEq;
+        public AssertOp opMin;
         public LVar value;
-        public ConditionOp opMax = ConditionOp.lessThanEq;
+        public AssertOp opMax;
         public LVar max;
         public LVar message;
 
-        public AssertI(LVar min, ConditionOp opMin, LVar value, ConditionOp opMax, LVar max, LVar message) {
+        public AssertI(TypeAssertion type, LVar min, AssertOp opMin, LVar value, AssertOp opMax, LVar max, LVar message) {
+            this.type = type;
             this.min = min;
             this.opMin = opMin;
             this.value = value;
@@ -30,27 +26,16 @@ public class AssertsLInstructions {
 
         @Override
         public final void run(LExecutor exec) {
-            if (exec.textBuffer.length() >= LExecutor.maxTextBuffer) return;
+            boolean typeAssert = value.isobj ? type.objFunction.get(value.objval) : type.function.get(value.numval);
+            boolean minAssert = opMin.function.get(min.num(), value.num());
+            boolean maxAssert = opMax.function.get(value.num(), max.num());
 
-            if (value.isobj) {
-                String strValue = toString(value.objval);
-                exec.textBuffer.append(strValue);
-            } else {
-                exec.textBuffer.append(value.numval);
+            if (!typeAssert || !minAssert || !maxAssert) {
+                //skip back to self.
+                // TODO enter broken assertion state
+                exec.counter.numval--;
+                exec.yield = true;
             }
-        }
-
-        public static String toString(Object obj) {
-            return
-                obj == null ? "null" :
-                obj instanceof String s ? s :
-                obj instanceof MappableContent content ? content.name :
-                obj instanceof Content ? "[content]" :
-                obj instanceof Building build ? build.block.name :
-                obj instanceof Unit unit ? unit.type.name :
-                obj instanceof Enum<?> e ? e.name() :
-                obj instanceof Team team ? team.name :
-                "[object]";
         }
     }
 }
