@@ -11,6 +11,6 @@ public class AssertLogic {
     public static void init(){
         assertsCategory = new LCategory(AssertVars.assertionsCategory, Color.slate, Icon.warningSmall);
 
-        AssertLStatements.register();
+        LogicStatements.register();
     }
 }

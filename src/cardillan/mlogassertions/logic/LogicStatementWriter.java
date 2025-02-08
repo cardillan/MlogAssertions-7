@@ -1,6 +1,6 @@
 package cardillan.mlogassertions.logic;
 
-public class AssertLStatementWriter {
+public class LogicStatementWriter {
     public static final String SEPARATOR = " ";
 
     private StringBuilder builder;
@@ -14,66 +14,66 @@ public class AssertLStatementWriter {
         builder.deleteCharAt(builder.length() - 1);
     }
 
-    public AssertLStatementWriter write(Object obj) {
+    public LogicStatementWriter write(Object obj) {
         return write(String.valueOf(obj)).write(SEPARATOR);
     }
 
-    public AssertLStatementWriter write(String str) {
+    public LogicStatementWriter write(String str) {
         builder.append(str).append(SEPARATOR);
         return this;
     }
 
-    public AssertLStatementWriter write(StringBuffer sb) {
+    public LogicStatementWriter write(StringBuffer sb) {
         builder.append(sb).append(SEPARATOR);
         return this;
     }
 
-    public AssertLStatementWriter write(CharSequence s) {
+    public LogicStatementWriter write(CharSequence s) {
         builder.append(s).append(SEPARATOR);
         return this;
     }
 
-    public AssertLStatementWriter write(CharSequence s, int start, int end) {
+    public LogicStatementWriter write(CharSequence s, int start, int end) {
         builder.append(s, start, end).append(SEPARATOR);
         return this;
     }
 
-    public AssertLStatementWriter write(char[] str) {
+    public LogicStatementWriter write(char[] str) {
         builder.append(str).append(SEPARATOR);
         return this;
     }
 
-    public AssertLStatementWriter write(char[] str, int offset, int len) {
+    public LogicStatementWriter write(char[] str, int offset, int len) {
         builder.append(str, offset, len).append(SEPARATOR);
         return this;
     }
 
-    public AssertLStatementWriter write(boolean b) {
+    public LogicStatementWriter write(boolean b) {
         builder.append(b).append(SEPARATOR);
         return this;
     }
 
-    public AssertLStatementWriter write(char c) {
+    public LogicStatementWriter write(char c) {
         builder.append(c).append(SEPARATOR);
         return this;
     }
 
-    public AssertLStatementWriter write(int i) {
+    public LogicStatementWriter write(int i) {
         builder.append(i).append(SEPARATOR);
         return this;
     }
 
-    public AssertLStatementWriter write(long lng) {
+    public LogicStatementWriter write(long lng) {
         builder.append(lng).append(SEPARATOR);
         return this;
     }
 
-    public AssertLStatementWriter write(float f) {
+    public LogicStatementWriter write(float f) {
         builder.append(f).append(SEPARATOR);
         return this;
     }
 
-    public AssertLStatementWriter write(double d) {
+    public LogicStatementWriter write(double d) {
         builder.append(d).append(SEPARATOR);
         return this;
     }

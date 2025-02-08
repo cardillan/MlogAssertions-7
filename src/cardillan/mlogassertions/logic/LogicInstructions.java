@@ -6,10 +6,11 @@ import mindustry.logic.LExecutor;
 import mindustry.logic.LExecutor.Var;
 import mindustry.world.blocks.logic.LogicBlock;
 
-public class AssertsLInstructions {
+public class LogicInstructions {
 
     public static class AssertI implements LExecutor.LInstruction {
-        public TypeAssertion type = TypeAssertion.any;
+        public AssertionType type = AssertionType.any;
+        public int multiple = 1;
         public int min;
         public AssertOp opMin = AssertOp.lessThanEq;
         public int value;
@@ -17,8 +18,9 @@ public class AssertsLInstructions {
         public int max;
         public int message;
 
-        public AssertI(TypeAssertion type, int min, AssertOp opMin, int value, AssertOp opMax, int max, int message) {
+        public AssertI(AssertionType type, int multiple, int min, AssertOp opMin, int value, AssertOp opMax, int max, int message) {
             this.type = type;
+            this.multiple = multiple;
             this.min = min;
             this.opMin = opMin;
             this.value = value;
@@ -35,19 +37,18 @@ public class AssertsLInstructions {
             Building building = exec.building( LExecutor.varThis);
 
             Var vaVal = var(exec, value);
-            boolean typeAssert = vaVal.isobj ? type.objFunction.get(vaVal.objval) : type.function.get(vaVal.numval);
-            boolean minAssert = opMin.function.get(num(exec,min), num(exec,value));
-            boolean maxAssert = opMax.function.get(num(exec,value), num(exec,max));
-
-            if (!typeAssert || !minAssert || !maxAssert) {
+            if ((vaVal.isobj ? type.objFunction.get(vaVal.objval) : type.function.get(vaVal.numval))
+                    && (type != AssertionType.multiple || (vaVal.numval % var(exec, multiple).numval == 0))
+                    && (opMin.function.get(num(exec,min), num(exec,value)))
+                    && (opMax.function.get(num(exec,value), num(exec,max)))) {
+                Assertions.remove((LogicBlock.LogicBuild) building);
+            } else {
                 Var message = var(exec, this.message);
                 Assertions.add((LogicBlock.LogicBuild) building, LExecutor.PrintI.toString(message.objval));
 
                 //skip back to self.
                 exec.counter.numval--;
                 //exec.yield = true;
-            } else {
-                Assertions.remove((LogicBlock.LogicBuild) building);
             }
         }
 
